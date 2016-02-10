@@ -380,12 +380,6 @@ decision  :: 'decision_volemia' ;
                description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
           end attributes
           ;
-          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 OR BUNN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 OR BUNN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                       attributes
-               argument_name :: 'euvolemicADHFamily_Arg_12' ;
-               caption :: 'Ácido úrico bajo o BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
           argument :: -((1.0)),(ConsumoSal = "Bajo") AND Na_ur < 20               attributes
                argument_name :: 'euvolemicADHFamily_Arg_19' ;
                caption :: 'Sodio en orina < 20 y consumo salino bajo' ;
@@ -420,12 +414,6 @@ decision  :: 'decision_volemia' ;
                caption :: 'Sodio en orina > 20 con consumo salino normal o alto' ;
           end attributes
           ;
-          argument :: -((1.0)),(BUNN > 20 AND (Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre"))      attributes
-               argument_name :: 'euvolemicADHFamily_Arg_25' ;
-               caption :: 'Creatinina y BUN alto no sugieren euvolemia' ;
-               description :: 'Criterio del experto' ;
-          end attributes
-          ;
           argument :: 1.0,Hipotiroidismo="No"    attributes
                argument_name :: 'euvolemicADHFamily_Arg_26' ;
                caption :: 'Descartado hipotiroidismo grave' ;
@@ -441,6 +429,18 @@ decision  :: 'decision_volemia' ;
           argument :: -((1.0)),(ConsumoSal = "Normal" OR ConsumoSal="Alto") AND Na_ur <= 20              attributes
                argument_name :: 'euvolemicADHFamily_Arg_24' ;
                caption :: 'Sodio en orina <= 20 con consumo de sal normal/alto' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: -((1.0)),(BUNN > 20 AND (Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre"))      attributes
+               argument_name :: 'euvolemicADHFamily_Arg_25' ;
+               caption :: 'Creatinina y BUN alto no sugieren euvolemia' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUNN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUNN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                       attributes
+               argument_name :: 'euvolemicADHFamily_Arg_12' ;
+               caption :: 'Ácido úrico bajo y BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
@@ -554,12 +554,6 @@ decision  :: 'decision_volemia' ;
           end attributes
           ;
           argument :: 1.0,BUNN >= 20                attributes
-               argument_name :: 'hipovolemicDiuretics_Arg_08' ;
-               caption :: 'Presenta una Creatinina alta' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
-          end attributes
-          ;
-          argument :: 1.0,BUNN >= 20                attributes
                argument_name :: 'hipovolemicDiuretics_Arg_10' ;
                caption :: 'Presenta un BUN alto' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
@@ -601,6 +595,12 @@ decision  :: 'decision_volemia' ;
           argument :: -((1.0)),AscEd = "Yes"                  attributes
                argument_name :: 'hipovolemicDiuretics_Arg_15' ;
                caption :: 'Presenta ascitis o edemas graves' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1,(Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre")     attributes
+               argument_name :: 'hipovolemicDiuretics_Arg_18' ;
+               caption :: 'Creatinina alta' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
@@ -665,12 +665,6 @@ decision  :: 'decision_volemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 OR BUNN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 OR BUNN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                       attributes
-               argument_name :: 'PrimaryPolydipsia_Arg_06' ;
-               caption :: 'Ácido úrico bajo o BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
           argument :: -((20)),TO="Baja"                     attributes
                argument_name :: 'PrimaryPolydipsia_Arg_07' ;
                caption :: 'Tensión ocular baja' ;
@@ -681,6 +675,18 @@ decision  :: 'decision_volemia' ;
                argument_name :: 'PrimaryPolydipsia_Arg_08' ;
                caption :: 'Presión venosa baja' ;
                description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
+          end attributes
+          ;
+          argument :: -((1.0)),(BUNN > 20 AND (Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre"))      attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_09' ;
+               caption :: 'Creatinina y BUN alto no sugieren euvolemia' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUNN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUNN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                       attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_06' ;
+               caption :: 'Ácido úrico bajo o BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
 end decision.
@@ -981,7 +987,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Wed Feb 10 12:02:19 CET 2016
+     metaprops :: '#Wed Feb 10 13:00:53 CET 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
