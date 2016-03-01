@@ -1,9 +1,9 @@
 /** PROforma (plain text) version 1.7 **/
 
-/**  IMPORTANT: Keep all your comments below the engine_version line **/
+/** IMPORTANT: Keep all your comments below the engine_version line **/
 engine_version :: '1.7' ;
 
-metadata  :: 'hyponatremia12' ;
+metadata  :: '' ;
      title :: 'Guia de hiponatremia' ;
      desc :: '' ;
      version :: '1.0' ;
@@ -115,10 +115,11 @@ end enquiry.
 decision  :: 'decision_task_09089' ;
      caption :: 'Tonicidad' ;
      description :: 'Seleccione de entre los diagnósticos siguiente, teniendo en cuenta sus argumentos a favor o en contra' ;
+     postcondition ::BUN=Urr / 2.1428;
      candidate :: 'Hipotonica' ;
           caption :: 'Hiponatremia Hipotónica' ;
           description :: 'La Osmolalidad plasmática está por debajo de 280' ;
-          argument :: for,OSM_p < 280                             attributes
+          argument :: for,OSM_p < 280                                    attributes
                argument_name :: 'Hiponatremia Hipotónica_Arg_01' ;
                caption :: 'OSM menor de 280 (valor = ${format_num(Osm_p,2)})' ;
           end attributes
@@ -127,7 +128,7 @@ decision  :: 'decision_task_09089' ;
      candidate :: 'Hipertonica' ;
           caption :: 'Hiponatremia Hipertónica' ;
           description :: 'La Osmolalidad plasmática está por encima de 295' ;
-          argument :: for,OSM_p > 295                             attributes
+          argument :: for,OSM_p > 295                                    attributes
                argument_name :: 'Hiponatremia Hipertónica_Arg_01' ;
                caption :: 'OSM mayor que 295 (valor = ${Osm_p})' ;
           end attributes
@@ -136,7 +137,7 @@ decision  :: 'decision_task_09089' ;
      candidate :: 'Isotonica' ;
           caption :: 'Hiponatremia Isotónica' ;
           description :: 'La Osmolalidad plasmática está en el rango normal (280-295)' ;
-          argument :: for,(OSM_p  >= 280) AND (OSM_p <=295)                             attributes
+          argument :: for,(OSM_p  >= 280) AND (OSM_p <=295)                                    attributes
                argument_name :: 'Hiponatremia Isotónica_Arg_01' ;
                caption :: 'Rango normal de OSM [280-295] ((valor = ${Osm_p})' ;
           end attributes
@@ -203,8 +204,8 @@ plan  :: 'plan_task_00693' ;
      component :: 'apoyo_al_diagnostico' ;
           caption :: 'apoyo diagnóstico' ;
           task_definition :: 'enquiry_task_04702' ;
-          schedule_constraint :: completed('Exploracion_fisica') ;
           schedule_constraint :: completed('Check_Colapso') ;
+          schedule_constraint :: completed('Exploracion_fisica') ;
           number_of_cycles ::1;
           ltwh :: 747,96,42,36;
      component :: 'Consumo_de_fármacos' ;
@@ -242,6 +243,12 @@ enquiry  :: 'enquiry_task_01701' ;
           data_definition :: 'booleanType' ;
           default_value ::No;
           mandatory :: no ;
+     source :: 'glucocorticoids' ;
+          caption :: 'Uso reciente de glucocorticoides' ;
+          description :: 'Uso actual de glucocorticoides (oral, intranasal, cutáneo, o inhaled)' ;
+          data_definition :: 'booleanType' ;
+          default_value ::No;
+          mandatory :: no ;
 end enquiry.
 
 enquiry  :: 'enquiry_task_04702' ;
@@ -266,11 +273,6 @@ enquiry  :: 'enquiry_task_04702' ;
           caption :: 'Potasio (mEq/L)' ;
           description :: '' ;
           data_definition :: 'realType' ;
-     source :: 'BUNN' ;
-          caption :: 'BUN' ;
-          description :: '' ;
-          data_definition :: 'realType' ;
-          mandatory :: no ;
      source :: 'acidourico_pl' ;
           caption :: 'Acido Úrico (mg/dl)' ;
           description :: '' ;
@@ -293,314 +295,323 @@ end enquiry.
 
 decision  :: 'decision_volemia' ;
      caption :: 'Clasificar Volemia' ;
+     choice_mode :: multiple ;
      support_mode :: numeric ;
      candidate :: 'euvolemicADHFamily' ;
           caption :: 'euvolémico por SIADH' ;
-          argument :: 1,OSM_p  < 275                             attributes
+          argument :: 1,OSM_p  < 275                                    attributes
                argument_name :: 'euvolemicADHFamily_Arg_01' ;
                caption :: 'Osmolalidad efectiva del volumen extracelular baja (Osm_pl < 275 mOsmol/kg H20)' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: 1,Ortostatismo="No" and DryMucous="No" and SkinTurgence="No" and Taquicardia="No" AND AscEd="No"                         attributes
+          argument :: 1,Ortostatismo="No" and DryMucous="No" and SkinTurgence="No" and Taquicardia="No" AND AscEd="No"                                attributes
                argument_name :: 'euvolemicADHFamily_Arg_10' ;
                caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, turgencia escasa, taquicardia) o hipervolemia (ascitis o edemas graves)' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),Ortostatismo  = "Yes"                            attributes
+          argument :: -((50)),Ortostatismo  = "Yes"                                   attributes
                argument_name :: 'euvolemicADHFamily_Arg_04' ;
                caption :: 'Presencia de hipotensión ortostática' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),DryMucous  = "Yes"                            attributes
+          argument :: -((50)),DryMucous  = "Yes"                                   attributes
                argument_name :: 'euvolemicADHFamily_Arg_05' ;
                caption :: 'Presencia de sequedad de mucosas' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),Taquicardia  = "Yes"                          attributes
+          argument :: -((50)),Taquicardia  = "Yes"                                 attributes
                argument_name :: 'euvolemicADHFamily_Arg_07' ;
                caption :: 'Presencia de taquicardia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),AscEd = "Yes"                         attributes
+          argument :: -((50)),AscEd = "Yes"                                attributes
                argument_name :: 'euvolemicADHFamily_Arg_09' ;
                caption :: 'Ascitis o edemas graves' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: 1,FuncionRenal  = "Normal" AND diureticos="No"                     attributes
+          argument :: 1,FuncionRenal  = "Normal" AND diureticos="No"                            attributes
                argument_name :: 'euvolemicADHFamily_Arg_11' ;
                caption :: 'Función renal normal y no toma diuréticos' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),diureticos="Yes"                     attributes
+          argument :: -((50)),diureticos="Yes"                            attributes
                argument_name :: 'euvolemicADHFamily_Arg_13' ;
                caption :: 'Toma diuréticos' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: 1,OSM_ur > 100  AND FuncionRenal="Normal" AND OSM_p < 280                          attributes
+          argument :: 1,OSM_ur > 100  AND FuncionRenal="Normal" AND OSM_p < 280                                 attributes
                argument_name :: 'euvolemicADHFamily_Arg_02' ;
                caption :: 'Concentración urinaria inapropiada  (U_osm >100 mOsmol/kg H2O con función renal normal) con hipo-osmolalidad' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),FuncionRenal  = "Insuficiencia renal"                     attributes
+          argument :: -((50)),FuncionRenal  = "Insuficiencia renal"                            attributes
                argument_name :: 'euvolemicADHFamily_Arg_14' ;
                caption :: 'Presenta insuficiencia renal' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50.0)),Hipotiroidismo="Yes"                    attributes
+          argument :: -((50.0)),Hipotiroidismo="Yes"                           attributes
                argument_name :: 'euvolemicADHFamily_Arg_17' ;
                caption :: 'Presenta hipotiroidismo grave' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),SkinTurgence = "Yes"  AND Edad < 55                         attributes
+          argument :: -((50)),SkinTurgence = "Yes"  AND Edad < 55                                attributes
                argument_name :: 'euvolemicADHFamily_Arg_06' ;
                caption :: 'Escasa turgencia de piel' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((20)),TO="Baja"                     attributes
+          argument :: -((20)),TO="Baja"                            attributes
                argument_name :: 'euvolemicADHFamily_Arg_15' ;
                caption :: 'Tensión ocular baja' ;
                description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
           end attributes
           ;
-          argument :: -((20)),PV  = "Baja"                     attributes
+          argument :: -((20)),PV  = "Baja"                            attributes
                argument_name :: 'euvolemicADHFamily_Arg_16' ;
                caption :: 'Presión venosa baja' ;
                description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
           end attributes
           ;
-          argument :: -((1.0)),(ConsumoSal = "Bajo") AND Na_ur < 20               attributes
-               argument_name :: 'euvolemicADHFamily_Arg_19' ;
-               caption :: 'Sodio en orina < 20 y consumo salino bajo' ;
-               description :: 'No se puede diagnosticar SIADH, reevaluar sodio en orina cuando consumo de sal normal' ;
-          end attributes
-          ;
-          argument :: 2.0,(ConsumoAgua = "Normal" OR ConsumoAgua = "Alto") AND (ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND diureticos="No" AND Na_ur >=30 AND Na_ur <= 40             attributes
-               argument_name :: 'euvolemicADHFamily_Arg_20' ;
-               caption :: 'Excreción urinaria de sodio elevada (>30-40 mmol/L) con consumo de agua y sal normales.' ;
-               description :: 'Criterio de experto (más peso según aumento Na_ur)' ;
-          end attributes
-          ;
-          argument :: 3.0,(ConsumoAgua = "Normal" OR ConsumoAgua = "Alto") AND (ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND diureticos="No" AND Na_ur > 40             attributes
-               argument_name :: 'euvolemicADHFamily_Arg_21' ;
-               caption :: 'Excreción urinaria de sodio elevada (>40 mmol/L) con consumo de agua y sal normales.' ;
-               description :: 'Criterio de experto (más peso según aumento Na_ur)' ;
-          end attributes
-          ;
-          argument :: 1,(ConsumoAgua = "Normal" OR ConsumoAgua = "Alto") AND (ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND diureticos="No" AND Na_ur > 20 AND Na_ur <30            attributes
+          argument :: 1,(ConsumoAgua = "Normal" OR ConsumoAgua = "Alto") AND (ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND diureticos="No" AND Na_ur > 20 AND Na_ur <30                   attributes
                argument_name :: 'euvolemicADHFamily_Arg_08' ;
                caption :: 'Excreción urinaria de sodio elevada (>20 mmol/L) con consumo de agua y sal normales.' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((1.0)),NOT(OSM_ur > 100)  AND FuncionRenal="Normal" AND OSM_p < 280                          attributes
+          argument :: -((1.0)),NOT(OSM_ur > 100)  AND FuncionRenal="Normal" AND OSM_p < 280                                 attributes
                argument_name :: 'euvolemicADHFamily_Arg_22' ;
                caption :: 'No presenta concentración urinaria inadecuada (OSM_ur <=100)' ;
           end attributes
           ;
-          argument :: 1.0,(ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND Na_ur > 20               attributes
-               argument_name :: 'euvolemicADHFamily_Arg_18' ;
-               caption :: 'Sodio en orina > 20 con consumo salino normal o alto' ;
-          end attributes
-          ;
-          argument :: 1.0,Hipotiroidismo="No"    attributes
+          argument :: 1.0,Hipotiroidismo="No"           attributes
                argument_name :: 'euvolemicADHFamily_Arg_26' ;
                caption :: 'Descartado hipotiroidismo grave' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((1.0)),OSM_p >=275        attributes
+          argument :: -((1.0)),OSM_p >=275               attributes
                argument_name :: 'euvolemicADHFamily_Arg_23' ;
                caption :: 'Osmolalidad plasmática >= 275mOsmoL/kg H20' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((1.0)),(ConsumoSal = "Normal" OR ConsumoSal="Alto") AND Na_ur <= 20              attributes
+          argument :: -((1.0)),(ConsumoSal = "Normal" OR ConsumoSal="Alto") AND Na_ur <= 20                     attributes
                argument_name :: 'euvolemicADHFamily_Arg_24' ;
                caption :: 'Sodio en orina <= 20 con consumo de sal normal/alto' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((1.0)),(BUNN > 20 AND (Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre"))      attributes
+          argument :: -((1.0)),(BUN > 20 AND (Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre"))             attributes
                argument_name :: 'euvolemicADHFamily_Arg_25' ;
                caption :: 'Creatinina y BUN alto no sugieren euvolemia' ;
                description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
           end attributes
           ;
-          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUNN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUNN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                       attributes
+          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                              attributes
                argument_name :: 'euvolemicADHFamily_Arg_12' ;
                caption :: 'Ácido úrico bajo y BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
+          argument :: 2.0,(ConsumoAgua = "Normal" OR ConsumoAgua = "Alto") AND (ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND diureticos="No" AND Na_ur >=30 AND Na_ur <= 40                    attributes
+               argument_name :: 'euvolemicADHFamily_Arg_20' ;
+               caption :: 'Excreción de sodio en orina elevada (>30-40 mmol/L) con consumo de agua y sal normales.' ;
+               description :: 'Criterio de experto (más peso según aumento Na_ur)' ;
+          end attributes
+          ;
+          argument :: 3.0,(ConsumoAgua = "Normal" OR ConsumoAgua = "Alto") AND (ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND diureticos="No" AND Na_ur > 40                    attributes
+               argument_name :: 'euvolemicADHFamily_Arg_21' ;
+               caption :: 'Excreción de sodio en orina muy elevada (>40 mmol/L) con consumo de agua y sal normales.' ;
+               description :: 'Criterio de experto (más peso según aumento Na_ur)' ;
+          end attributes
+          ;
+          argument :: -((1.0)),(ConsumoSal = "Bajo") AND Na_ur < 20                      attributes
+               argument_name :: 'euvolemicADHFamily_Arg_19' ;
+               caption :: 'Excreción de sodio en orina < 20 y consumo salino bajo' ;
+               description :: 'No se puede diagnosticar SIADH, reevaluar sodio en orina cuando consumo de sal normal' ;
+          end attributes
+          ;
+          argument :: 1.0,(ConsumoSal = "Normal" OR ConsumoSal = "Alto") AND Na_ur > 20                      attributes
+               argument_name :: 'euvolemicADHFamily_Arg_18' ;
+               caption :: 'Excreción de sodio en orina > 20 con consumo salino normal o alto' ;
+          end attributes
+          ;
           recommendation ::netsupport(decision_volemia_copy_1, euvolemicADHFamily) >= 1;
      candidate :: 'hipervolemicHF' ;
           caption :: 'Hipervolémico por insuficiencia cardíaca' ;
-          argument :: 1,Na_ur < 20                                            attributes
-               argument_name :: 'hipervolemic_Arg_03' ;
-               caption :: 'El sodio en orina es < 20' ;
-          end attributes
-          ;
-          argument :: 1.0,PV  = "Alto"                  attributes
-               argument_name :: 'hipervolemicHF_Arg_06' ;
-               caption :: 'Presenta presión venosa central alta' ;
-          end attributes
-          ;
-          argument :: 1.0,DiuASA  = "Yes" AND InsufCardiaca  = "Yes"                  attributes
+          argument :: 1.0,DiuASA  = "Yes" AND InsufCardiaca  = "Yes"                         attributes
                argument_name :: 'hipervolemicHF_Arg_08' ;
                caption :: 'Toma Diuréticos de ASA (Furosemida) y presenta insuficiencia cardíaca' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1,AscEd  = "Yes"                  attributes
+          argument :: 1,AscEd  = "Yes"                         attributes
                argument_name :: 'hypervolemic_Arg_01' ;
                caption :: 'Presenta ascitis o edemas importantes' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1.0,InsufCardiaca  = "Yes"                  attributes
+          argument :: 1.0,InsufCardiaca  = "Yes"                         attributes
                argument_name :: 'hipervolemicHF_Arg_07' ;
                caption :: 'Presenta signos o síntomas de insuficiencia cardíaca' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1,TO  = "Normal" OR TO  = "Alto"             attributes
+          argument :: 1,TO  = "Normal" OR TO  = "Alto"                    attributes
                argument_name :: 'hypervolemic_Arg_02' ;
                caption :: 'La tensión ocular es normal o alta' ;
                description :: 'Criterio de experto' ;
           end attributes
           ;
-          argument :: 1,(NOT((Sexo="Hombre" AND (acidourico_pl < 7.0 OR BUNN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 OR BUNN < 20)))) AND (Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes")               attributes
+          argument :: 1,(NOT((Sexo="Hombre" AND (acidourico_pl < 7.0 OR BUN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 OR BUN < 20)))) AND (Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes")                      attributes
                argument_name :: 'hipervolemic_Arg_04' ;
                caption :: 'No presenta signos analíticos y de exploración física de euvolemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: -((10.0)),AscEd = "No"                  attributes
-               argument_name :: 'hipervolemicHF_Arg_05' ;
-               caption :: 'No presenta ascitis o edemas graves' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
-          end attributes
-          ;
-          argument :: -((5)), (Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes")         attributes
+          argument :: -((5)), (Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes")                attributes
                argument_name :: 'hipervolemicHF_Arg_09' ;
                caption :: 'Presenta signos de hipovolemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: -((50.0)),InsufCardiaca="No"       attributes
+          argument :: -((50.0)),InsufCardiaca="No"              attributes
                argument_name :: 'hipervolemicHF_Arg_10' ;
                caption :: 'No tiene signos o síntomas de insuficiencia cardíaca' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
+          argument :: -((10.0)),AscEd = "No"                         attributes
+               argument_name :: 'hipervolemicHF_Arg_11' ;
+               caption :: 'No presenta ascitis o edemas graves' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,PV  = "Alto"                         attributes
+               argument_name :: 'hipervolemicHF_Arg_06' ;
+               caption :: 'Presenta presión venosa central alta' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: -((1.0)),PV="Normal" OR PV="Bajo"       attributes
+               argument_name :: 'hipervolemicHF_Arg_12' ;
+               caption :: 'Presenta presión venosa central normal o baja' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: 1,Na_ur < 20                                                   attributes
+               argument_name :: 'hipervolemic_Arg_03' ;
+               caption :: 'El sodio en orina es < 20' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
           recommendation ::netsupport(decision_volemia_copy_1, hipervolemicHF) >= 1;
      candidate :: 'hipovolemicDiuretics' ;
           caption :: 'Hipovolémico por diuréticos' ;
-          argument :: 1.0,Ortostatismo = "Yes"                 attributes
+          argument :: 1.0,Ortostatismo = "Yes"                        attributes
                argument_name :: 'hipovolemicDiuretics_Arg_01' ;
                caption :: 'Presenta ortostatismo' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1.0,Taquicardia = "Yes"                 attributes
+          argument :: 1.0,Taquicardia = "Yes"                        attributes
                argument_name :: 'hipovolemicDiuretics_Arg_02' ;
                caption :: 'Presenta taquicardia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1.0,DryMucous = "Yes"                 attributes
+          argument :: 1.0,DryMucous = "Yes"                        attributes
                argument_name :: 'hipovolemicDiuretics_Arg_03' ;
                caption :: 'Presenta sequedad de mucosas' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1.0,SkinTurgence = "Yes" AND Edad < 55                 attributes
+          argument :: 1.0,SkinTurgence = "Yes" AND Edad < 55                        attributes
                argument_name :: 'hipovolemicDiuretics_Arg_04' ;
                caption :: 'Presenta escasa turgencia de piel y menor de 55' ;
           end attributes
           ;
-          argument :: 1.0,Vomitos  = "Yes"                 attributes
-               argument_name :: 'hipovolemicDiuretics_Arg_05' ;
-               caption :: 'Presenta vómitos (o diarrea)' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
-          end attributes
-          ;
-          argument :: 1.0,TO  = "Bajo"                 attributes
+          argument :: 1.0,TO  = "Bajo"                        attributes
                argument_name :: 'hipovolemicDiuretics_Arg_06' ;
                caption :: 'Presenta tensión ocular baja' ;
           end attributes
           ;
-          argument :: 1.0,PV = "Bajo"                 attributes
+          argument :: 1.0,PV = "Bajo"                        attributes
                argument_name :: 'hipovolemicDiuretics_Arg_07' ;
                caption :: 'Presión venosa central baja' ;
           end attributes
           ;
-          argument :: 1.0,(Sexo="Hombre" AND Acidourico_pl >= 7) OR (Sexo="Mujer" AND Acidourico_pl >=5.4)                 attributes
+          argument :: 1.0,(Sexo="Hombre" AND Acidourico_pl >= 7) OR (Sexo="Mujer" AND Acidourico_pl >=5.4)                        attributes
                argument_name :: 'hipovolemicDiuretics_Arg_09' ;
                caption :: 'Presenta un ácido úrico plasmático alto' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1.0,BUNN >= 20                attributes
+          argument :: 1.0,BUN >= 20                       attributes
                argument_name :: 'hipovolemicDiuretics_Arg_10' ;
                caption :: 'Presenta un BUN alto' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: -((50)),diureticos = "No"                attributes
-               argument_name :: 'hipovolemicDiuretics_Arg_11' ;
-               caption :: 'No está en tratamiento diurético' ;
-          end attributes
-          ;
-          argument :: 1.0,diureticos = "Yes"                attributes
+          argument :: 1.0,diureticos = "Yes"                       attributes
                argument_name :: 'hipovolemicDiuretics_Arg_12' ;
                caption :: 'Está bajo tratamiento diurético' ;
           end attributes
           ;
-          argument :: 1.0,(DiuASA = "Yes" and InsufCardiaca = "No")                attributes
+          argument :: 1.0,(DiuASA = "Yes" and InsufCardiaca = "No")                       attributes
                argument_name :: 'hipovolemicDiuretics_Arg_14' ;
                caption :: 'Está tomando diuréticos de ASA (Furosemida) y no presenta insuficiencia cardíaca' ;
           end attributes
           ;
-          argument :: 1.0,Tiazidas  = "Yes"                attributes
+          argument :: 1.0,Tiazidas  = "Yes"                       attributes
                argument_name :: 'hipovolemicDiuretics_Arg_13' ;
                caption :: 'Esta bajo tratamiento de tiazidas (es el diurético presenta más prevalencia)' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 0,Ortostatismo="No" and DryMucous="No" and SkinTurgence="No" and Taquicardia="No"   attributes
+          argument :: 0,Ortostatismo="No" and DryMucous="No" and SkinTurgence="No" and Taquicardia="No"          attributes
                argument_name :: 'hipovolemicDiuretics_Arg_16' ;
                caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, turgencia escasa, taquicardia)' ;
                description :: 'La hipovolemia puede ser sutil, sólo el 24% presentaba alguno de estos signos (especialmente si toma tiazidas)' ;
           end attributes
           ;
-          argument :: 0,Na_ur <=20 AND diureticos="Yes"  attributes
+          argument :: 0,Na_ur <=20 AND diureticos="Yes"         attributes
                argument_name :: 'hipovolemicDiuretics_Arg_17' ;
                caption :: 'Sodio <=20 en orina' ;
                description :: 'Aunque la hipolovemia presenta Na_ur <=20, la toma de algunos diuréticos aumentaría la excreción de sodio' ;
           end attributes
           ;
-          argument :: -((1.0)),AscEd = "Yes"                  attributes
-               argument_name :: 'hipovolemicDiuretics_Arg_15' ;
+          argument :: 1,(Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre")            attributes
+               argument_name :: 'hipovolemicDiuretics_Arg_18' ;
+               caption :: 'Creatinina alta' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: -((50)),diureticos = "No"                       attributes
+               argument_name :: 'hipovolemicDiuretics_Arg_19' ;
+               caption :: 'No está en tratamiento diurético' ;
+          end attributes
+          ;
+          argument :: -((1.0)),AscEd = "Yes"                         attributes
+               argument_name :: 'hipovolemicDiuretics_Arg_20' ;
                caption :: 'Presenta ascitis o edemas graves' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1,(Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre")     attributes
-               argument_name :: 'hipovolemicDiuretics_Arg_18' ;
-               caption :: 'Creatinina alta' ;
+          argument :: 1.0,AscEd="No"     attributes
+               argument_name :: 'hipovolemicDiuretics_Arg_05' ;
+               caption :: 'No presenta ascitis o edemas graves' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
@@ -608,85 +619,219 @@ decision  :: 'decision_volemia' ;
      candidate :: 'LowSoluteIntake' ;
           caption :: 'Bajo consumo de solutos' ;
           description :: '(Euvolémica/Hipovolémica)' ;
-          argument :: 1.0,AscEd="No" attributes
+          argument :: 1.0,Na_ur < 20      attributes
+               argument_name :: 'LowSoluteIntake_Arg_00' ;
+               caption :: 'Presenta excreción de sodio en orina < 20' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: -((1.0)),Na_ur >= 20      attributes
+               argument_name :: 'LowSoluteIntake_Arg_08' ;
+               caption :: 'Presenta excreción de sodio en orina >=20' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: 1.0,AscEd="No"        attributes
                argument_name :: 'LowSoluteIntake_Arg_01' ;
                caption :: 'No presenta signos o síntomas de hipervolemia (ascitis o edemas graves)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1.0,OSM_ur  =< 100 attributes
-               argument_name :: 'LowSoluteIntake_Arg_02' ;
-               caption :: 'Osmolalidad urinaria baja (<=100)' ;
-               description :: 'El umbral de Osm_ur es criterio de experto' ;
-          end attributes
-          ;
-          argument :: 1.0,DietaHabitos includes "Come poco" attributes
+          argument :: 1.0,DietaHabitos includes "Come poco"        attributes
                argument_name :: 'LowSoluteIntake_Arg_03' ;
                caption :: 'El paciente come poco' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: 1.0,DietaHabitos includes "Alcohol en exceso" attributes
+          argument :: 1.0,DietaHabitos includes "Alcohol en exceso"        attributes
                argument_name :: 'LowSoluteIntake_Arg_04' ;
                caption :: 'Ha tomado alcohol en exceso' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: -5.0,DietaHabitos includes "Come normal"  attributes
+          argument :: -((5.0)),DietaHabitos includes "Come normal"         attributes
                argument_name :: 'LowSoluteIntake_Arg_05' ;
                caption :: 'El paciente tiene una ingesta de solutos adecuada' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: -((1.0)),AscEd="Yes"     attributes
+               argument_name :: 'LowSoluteIntake_Arg_09' ;
+               caption :: 'Presenta ascitis o edemas graves' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,OSM_ur  =< 100        attributes
+               argument_name :: 'LowSoluteIntake_Arg_02' ;
+               caption :: 'Osmolalidad urinaria baja (<=100)' ;
+               description :: 'Current Medical Research and Opinion, 31:9, 1755-1761 (2015)' ;
+          end attributes
+          ;
+          argument :: -((1.0)),OSM_ur > 100      attributes
+               argument_name :: 'LowSoluteIntake_Arg_06' ;
+               caption :: 'Presenta osmolalidad urinaria > 100 mOsmol/Kg H20' ;
+               description :: 'Current Medical Research and Opinion, 31:9, 1755-1761 (2015)' ;
           end attributes
           ;
           recommendation ::netsupport(decision_volemia_copy_1, LowSoluteIntake) >= 1;
      candidate :: 'PrimaryPolydipsia' ;
-          caption :: 'Polidipsia primaria' ;
-          argument :: 1.0,ConsumoAgua  = "Alto" attributes
+          caption :: 'Euvolémica por Polidipsia primaria' ;
+          argument :: 1.0,ConsumoAgua  = "Alto"        attributes
                argument_name :: 'PrimaryPolydipsia_Arg_01' ;
                caption :: 'Consumo excesivo de agua' ;
           end attributes
           ;
-          argument :: -50.0,ConsumoAgua="Bajo" OR ConsumoAgua="Normal" attributes
-               argument_name :: 'PrimaryPolydipsia_Arg_02' ;
-               caption :: 'No consume agua de forma excesiva' ;
-          end attributes
-          ;
-          argument :: 1.0,OSM_ur  =< 100 attributes
-               argument_name :: 'PrimaryPolydipsia_Arg_03' ;
-               caption :: 'Osmolalidad urinaria baja (<=100)' ;
-               description :: 'El umbral de Osm_ur es criterio de experto' ;
-          end attributes
-          ;
-          argument :: -((50)),AscEd = "Yes"                         attributes
-               argument_name :: 'PrimaryPolydipsia_Arg_04' ;
-               caption :: 'Ascitis o edemas graves' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
-          argument :: 1,Ortostatismo="No" and DryMucous="No" and SkinTurgence="No" and Taquicardia="No" AND AscEd="No"                         attributes
+          argument :: 1,Ortostatismo="No" and DryMucous="No" and SkinTurgence="No" and Taquicardia="No" AND AscEd="No"                                attributes
                argument_name :: 'PrimaryPolydipsia_Arg_05' ;
                caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, turgencia escasa, taquicardia) o hipervolemia (ascitis o edemas graves)' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((20)),TO="Baja"                     attributes
+          argument :: -((20)),TO="Baja"                            attributes
                argument_name :: 'PrimaryPolydipsia_Arg_07' ;
                caption :: 'Tensión ocular baja' ;
                description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
           end attributes
           ;
-          argument :: -((20)),PV  = "Baja"                     attributes
+          argument :: -((20)),PV  = "Baja"                            attributes
                argument_name :: 'PrimaryPolydipsia_Arg_08' ;
                caption :: 'Presión venosa baja' ;
                description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
           end attributes
           ;
-          argument :: -((1.0)),(BUNN > 20 AND (Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre"))      attributes
+          argument :: -((1.0)),(BUN > 20 AND (Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre"))             attributes
                argument_name :: 'PrimaryPolydipsia_Arg_09' ;
                caption :: 'Creatinina y BUN alto no sugieren euvolemia' ;
                description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
           end attributes
           ;
-          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUNN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUNN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                       attributes
-               argument_name :: 'PrimaryPolydipsia_Arg_06' ;
-               caption :: 'Ácido úrico bajo o BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
+          argument :: -((50.0)),ConsumoAgua="Bajo" OR ConsumoAgua="Normal"        attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_10' ;
+               caption :: 'No consume agua de forma excesiva' ;
+          end attributes
+          ;
+          argument :: -((50)),AscEd = "Yes"                                attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_11' ;
+               caption :: 'Ascitis o edemas graves' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: 5.0,Na_ur < 20      attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_02' ;
+               caption :: 'Presenta excreción de sodio en orina < 20' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: -((5.0)),Na_ur >= 20      attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_13' ;
+               caption :: 'Presenta excreción de sodio en orina >= 20' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR SkinTurgence="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                              attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_04' ;
+               caption :: 'Ácido úrico bajo y BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,OSM_ur  =< 100        attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_03' ;
+               caption :: 'Osmolalidad urinaria <=100' ;
+               description :: 'Current Medical Research and Opinion, 31:9, 1755-1761 (2015)' ;
+          end attributes
+          ;
+          argument :: -((10.0)),OSM_ur >100      attributes
+               argument_name :: 'PrimaryPolydipsia_Arg_12' ;
+               caption :: 'Presenta osmolalidad urinaria > 100' ;
+               description :: 'Current Medical Research and Opinion, 31:9, 1755-1761 (2015)' ;
+          end attributes
+          ;
+     candidate :: 'euvolemicNSIA' ;
+          caption :: 'Euvolémico con síndrome nefrogénico de antidiuresis inapropiada' ;
+     candidate :: 'euvolemicGlucodef' ;
+          caption :: 'Euvolémico por deficiencia de glucocorticoides' ;
+     candidate :: 'hipervolemiaCirrosis' ;
+          caption :: 'Hipervolemia por cirrosis' ;
+     candidate :: 'hipervolemiaInsuRenal' ;
+          caption :: 'Hipervolemia por Insuficiencia Renal' ;
+     candidate :: 'hipovolemicGastro' ;
+          caption :: 'hipovolémico por enfermedad gastrointestinal' ;
+     candidate :: 'euvolemicEAH' ;
+          caption :: 'euvolémica asociada a ejercicio físico' ;
+     candidate :: 'hipovolemicMineral' ;
+          caption :: 'hipovolémica por deficiencia de mineracorticoides' ;
+     candidate :: 'euvolemicHypothyroidism' ;
+          caption :: 'euvolémica por hipotiroidismo grave' ;
+     candidate :: 'hipovolemicCSW' ;
+          caption :: 'Hipovolémico con síndrome pierde-sal cerebral (CSW)' ;
+          description :: 'En ocasiones puede aparecer junto a SIADH' ;
+          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUN < 20)))    attributes
+               argument_name :: 'hipovolemicCSW_Arg_01' ;
+               caption :: 'Ácido úrico bajo y BUN bajo/normal' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: 1.0,Ortostatismo = "Yes"                        attributes
+               argument_name :: 'hipovolemicCSW_Arg_03' ;
+               caption :: 'Presenta ortostatismo (signo de hipovolemia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,Taquicardia = "Yes"                        attributes
+               argument_name :: 'hipovolemicCSW_Arg_02' ;
+               caption :: 'Presenta taquicardia (signo de hipovolemia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,DryMucous = "Yes"                        attributes
+               argument_name :: 'hipovolemicCSW_Arg_04' ;
+               caption :: 'Presenta sequedad de mucosas (signo de hipovolemia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,SkinTurgence = "Yes" AND Edad < 55                        attributes
+               argument_name :: 'hipovolemicCSW_Arg_05' ;
+               caption :: 'Presenta escasa turgencia de piel y menor de 55 (signo hipovolemia)' ;
+          end attributes
+          ;
+          argument :: 1.0,AscEd="No"     attributes
+               argument_name :: 'hipovolemicCSW_Arg_06' ;
+               caption :: 'No presenta ascitis o edemas graves' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,TO  = "Bajo"                        attributes
+               argument_name :: 'hipovolemicCSW_Arg_07' ;
+               caption :: 'Presenta tensión ocular baja' ;
+          end attributes
+          ;
+          argument :: 1.0,PV = "Bajo"                        attributes
+               argument_name :: 'hipovolemicCSW_Arg_08' ;
+               caption :: 'Presión venosa central baja' ;
+          end attributes
+          ;
+          argument :: -((1.0)),AscEd = "Yes"                         attributes
+               argument_name :: 'hipovolemicCSW_Arg_09' ;
+               caption :: 'Presenta ascitis o edemas graves' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: -((1)),Ortostatismo="No" and DryMucous="No" and SkinTurgence="No" and Taquicardia="No"   attributes
+               argument_name :: 'hipovolemicCSW_Arg_10' ;
+               caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, turgencia escasa, taquicardia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: 10.0,hemoIntraCraneal  = "Yes"   attributes
+               argument_name :: 'hipovolemicCSW_Arg_00' ;
+               caption :: 'Presenta hemorragia intracraneal' ;
+               description :: 'TODO: o neurocirugía o head injury' ;
+          end attributes
+          ;
+          argument :: -((10)),hemoIntraCraneal  = "No"   attributes
+               argument_name :: 'hipovolemicCSW_Arg_11' ;
+               caption :: 'No presenta hemorragia intracraneal' ;
+               description :: 'TODO: o neurocirugía o head injury' ;
           end attributes
           ;
 end decision.
@@ -923,6 +1068,11 @@ enquiry  :: 'enquiry_task_09387' ;
           description :: '' ;
           data_definition :: 'realType' ;
           mandatory :: no ;
+     source :: 'BUN' ;
+          caption :: 'BUN' ;
+          description :: '' ;
+          data_definition :: 'realType' ;
+          mandatory :: no ;
 end enquiry.
 
 decision  :: 'ComprobarSodio' ;
@@ -930,12 +1080,12 @@ decision  :: 'ComprobarSodio' ;
      candidate :: 'Continuar' ;
           caption :: 'El nivel de sodio es bajo' ;
           description :: 'Sodio=(${format_num(Nacor,2)})' ;
-          argument :: for,MedSodio = "Indirecta" AND (Nacor < 135)                                                   attributes
+          argument :: for,MedSodio = "Indirecta" AND (Nacor < 135)                                                          attributes
                argument_name :: 'Continuar_Arg_01' ;
                caption :: 'El sodio corregido es menor de 135' ;
           end attributes
           ;
-          argument :: for,MedSodio = "Directa" AND (Na_pl < 135)                                                   attributes
+          argument :: for,MedSodio = "Directa" AND (Na_pl < 135)                                                          attributes
                argument_name :: 'Continuar_Arg_02' ;
                caption :: 'La medida es directa y el sodio sérico es menor que 135' ;
           end attributes
@@ -944,12 +1094,12 @@ decision  :: 'ComprobarSodio' ;
      candidate :: 'SodioNormal' ;
           caption :: 'Sodio en nivel normal' ;
           description :: 'Sodio=(${format_num(Nacor,2)})' ;
-          argument :: for,MedSodio = "Indirecta" AND (Nacor >=135) AND (Nacor <=145)                                              attributes
+          argument :: for,MedSodio = "Indirecta" AND (Nacor >=135) AND (Nacor <=145)                                                     attributes
                argument_name :: 'SodioNormal_Arg_02' ;
                caption :: 'El sodio indirecto (corregido: ${Nacor}) está en valores normales (>=135, <=145)' ;
           end attributes
           ;
-          argument :: for,MedSodio = "Directa" AND (Na_pl >= 135) AND (Na_pl <= 145)                                                   attributes
+          argument :: for,MedSodio = "Directa" AND (Na_pl >= 135) AND (Na_pl <= 145)                                                          attributes
                argument_name :: 'SodioNormal_01' ;
                caption :: 'El sodio sérico medido directamente (${Na_pl}) está en niveles normales' ;
           end attributes
@@ -987,7 +1137,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Wed Feb 10 13:00:53 CET 2016
+     metaprops :: '#Tue Mar 01 11:00:20 CET 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
