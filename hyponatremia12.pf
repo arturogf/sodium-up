@@ -3,7 +3,7 @@
 /** IMPORTANT: Keep all your comments below the engine_version line **/
 engine_version :: '1.7' ;
 
-metadata  :: '' ;
+metadata  :: 'hyponatremia12' ;
      title :: 'Guia de hiponatremia' ;
      desc :: '' ;
      version :: '1.0' ;
@@ -691,6 +691,100 @@ decision  :: 'decision_volemia' ;
           caption :: 'Hipervolemia por Insuficiencia Renal' ;
      candidate :: 'hipovolemicGastro' ;
           caption :: 'hipovolémico por enfermedad gastrointestinal' ;
+          argument :: 1.0,AscEd="No"                attributes
+               argument_name :: 'hipovolemicGastro_Arg_02' ;
+               caption :: 'No presenta signos o síntomas de hipervolemia (ascitis o edemas graves)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,DietaHabitos includes "Come poco"                attributes
+               argument_name :: 'hipovolemicGastro_Arg_03' ;
+               caption :: 'El paciente come poco' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,Na_ur < 20 and Diarrea="Yes" attributes
+               argument_name :: 'hipovolemicGastro_Arg_01' ;
+               caption :: 'Presenta excreción de sodio en orina < 20 y diarreas' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,Na_ur >= 20 and Vomitos="Yes" attributes
+               argument_name :: 'hipovolemicGastro_Arg_04' ;
+               caption :: 'Presenta excreción de sodio en orina >= 20 y vómitos' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: -((5.0)),DietaHabitos includes "Come normal"                 attributes
+               argument_name :: 'hipovolemicGastro_Arg_05' ;
+               caption :: 'El paciente tiene una ingesta de solutos adecuada' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: -((1.0)),AscEd="Yes"             attributes
+               argument_name :: 'hipovolemicGastro_Arg_06' ;
+               caption :: 'Presenta ascitis o edemas graves' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,TO  = "Bajo"                                attributes
+               argument_name :: 'hipovolemicGastro_Arg_07' ;
+               caption :: 'Presenta tensión ocular baja' ;
+          end attributes
+          ;
+          argument :: 1.0,PV = "Bajo"                                attributes
+               argument_name :: 'hipovolemicGastro_Arg_08' ;
+               caption :: 'Presión venosa central baja' ;
+          end attributes
+          ;
+          argument :: -((1)),Ortostatismo="No" and DryMucous="No" and Taquicardia="No"           attributes
+               argument_name :: 'hipovolemicGastro_Arg_09' ;
+               caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, taquicardia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,Taquicardia = "Yes"                                attributes
+               argument_name :: 'hipovolemicGastro_Arg_10' ;
+               caption :: 'Presenta taquicardia (signo de hipovolemia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,Ortostatismo = "Yes"                                attributes
+               argument_name :: 'hipovolemicGastro_Arg_11' ;
+               caption :: 'Presenta ortostatismo (signo de hipovolemia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,DryMucous = "Yes"                                attributes
+               argument_name :: 'hipovolemicGastro_Arg_12' ;
+               caption :: 'Presenta sequedad de mucosas (signo de hipovolemia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,(Sexo="Hombre" AND Acidourico_pl >= 7) OR (Sexo="Mujer" AND Acidourico_pl >=5.4)                                attributes
+               argument_name :: 'hipovolemicGastro_Arg_13' ;
+               caption :: 'Presenta un ácido úrico plasmático alto' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1,(Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre")                    attributes
+               argument_name :: 'hipovolemicGastro_Arg_14' ;
+               caption :: 'Creatinina alta' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,BUN >= 20                               attributes
+               argument_name :: 'hipovolemicGastro_Arg_15' ;
+               caption :: 'Presenta un BUN alto' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 1.0,ConsumoSal = "Bajo" attributes
+               argument_name :: 'hipovolemicGastro_Arg_16' ;
+               caption :: 'Consumo escaso de sal' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
      candidate :: 'euvolemicEAH' ;
           caption :: 'euvolémica asociada a ejercicio físico' ;
           argument :: -((1.0)),(Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre")     attributes
@@ -762,12 +856,6 @@ decision  :: 'decision_volemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
-          argument :: -((1)),Ortostatismo="No" and DryMucous="No" and Taquicardia="No"           attributes
-               argument_name :: 'hipovolemicCSW_Arg_13' ;
-               caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, turgencia escasa, taquicardia)' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
           argument :: 1.0,Na_ur > 20        attributes
                argument_name :: 'hipovolemicCSW_Arg_14' ;
                caption :: 'Sodio en orina > 20' ;
@@ -806,6 +894,12 @@ decision  :: 'decision_volemia' ;
           argument :: -((10)),PNC  = "No"   attributes
                argument_name :: 'hipovolemicCSW_Arg_12' ;
                caption :: 'No presenta patologías neuroquirúrgicas cerebrales' ;
+          end attributes
+          ;
+          argument :: -((1)),Ortostatismo="No" and DryMucous="No" and Taquicardia="No"           attributes
+               argument_name :: 'hipovolemicCSW_Arg_13' ;
+               caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, taquicardia)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
           recommendation ::netsupport(decision_volemia_copy_1, hipovolemicCSW) >= 1;
@@ -1010,6 +1104,11 @@ enquiry  :: 'Sintomas_del_paciente_copy_1' ;
           data_definition :: 'booleanType' ;
           default_value ::No;
           mandatory :: no ;
+     source :: 'Diarrea' ;
+          caption :: 'Diarrea' ;
+          description :: '' ;
+          data_definition :: 'booleanType' ;
+          mandatory :: no ;
 end enquiry.
 
 enquiry  :: 'Exploracion_fisica_copy_1' ;
@@ -1188,7 +1287,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Mon Mar 14 09:28:40 CET 2016
+     metaprops :: '#Mon Mar 14 12:26:30 CET 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
