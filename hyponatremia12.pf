@@ -3,7 +3,7 @@
 /** IMPORTANT: Keep all your comments below the engine_version line **/
 engine_version :: '1.7' ;
 
-metadata  :: '' ;
+metadata  :: 'hyponatremia12' ;
      title :: 'Guia de hiponatremia' ;
      desc :: '' ;
      version :: '1.0' ;
@@ -910,62 +910,6 @@ decision  :: 'decision_volemia' ;
           end attributes
           ;
           recommendation ::netsupport(decision_volemia_copy_1, hipovolemicGastro) >= 1;
-     candidate :: 'euvolemicHypothyroidism' ;
-          caption :: 'euvolémica por hipotiroidismo grave' ;
-          argument :: -((1.0)),(Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre")                  attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_01' ;
-               caption :: 'Creatinina alta no sugiere euvolemia' ;
-          end attributes
-          ;
-          argument :: -((1.0)),(BUN > 20)         attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_02' ;
-               caption :: 'BUN alto no sugieren euvolemia' ;
-               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
-          end attributes
-          ;
-          argument :: -((50)),AscEd = "Yes"                                            attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_03' ;
-               caption :: 'Ascitis o edemas graves' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
-          argument :: 1,Ortostatismo="No" and DryMucous="No" and Taquicardia="No" AND AscEd="No"                                            attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_04' ;
-               caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, turgencia escasa, taquicardia) o hipervolemia (ascitis o edemas graves)' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
-          argument :: -((50.0)),Hipotiroidismo="No"                                       attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_06' ;
-               caption :: 'No presenta hipotiroidismo grave' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
-          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                                          attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_07' ;
-               caption :: 'Ácido úrico bajo y BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
-          end attributes
-          ;
-          argument :: 5,Hipotiroidismo="Yes"                                       attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_05' ;
-               caption :: 'Presenta hipotiroidismo grave' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
-          argument :: -((5)),TO="Baja"                                        attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_08' ;
-               caption :: 'Tensión ocular baja' ;
-               description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
-          end attributes
-          ;
-          argument :: -((20)),PV  = "Baja"                                        attributes
-               argument_name :: 'euvolemicHypothyroidism_Arg_09' ;
-               caption :: 'Presión venosa baja' ;
-               description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
-          end attributes
-          ;
-          recommendation ::netsupport(decision_volemia_copy_1, euvolemicHypothyroidism) >= 1;
      candidate :: 'hipovolemicCSW' ;
           caption :: 'Hipovolémico con síndrome pierde-sal cerebral (CSW)' ;
           description :: 'En ocasiones puede aparecer junto a SIADH' ;
@@ -1335,6 +1279,62 @@ decision  :: 'decision_volemia' ;
           end attributes
           ;
           recommendation ::netsupport(decision_volemia_copy_1, hipovolemicHipoaldosteronism) >= 1;
+     candidate :: 'euvolemicHypothyroidism' ;
+          caption :: 'euvolémica por hipotiroidismo grave' ;
+          description :: 'La hiponatremia por hipotiroidismo es muy infrecuente. En los casos en los que se presenta suelen ser hipotiroidismo clínicamente graves (coma mixedematoso). En cualquier caso, si presenta hipotiroidismo franco, se recomienda dar tratamiento específico y en caso de persistir la hiponatremia reevaluar la clasificación diagnóstica.' ;
+          argument :: -((1.0)),(Creatinina_ser>1.1 AND Sexo="Mujer") OR (Creatinina_ser>1.3 AND Sexo="Hombre")                  attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_01' ;
+               caption :: 'Creatinina alta no sugiere euvolemia' ;
+          end attributes
+          ;
+          argument :: -((1.0)),(BUN > 20)         attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_02' ;
+               caption :: 'BUN alto no sugieren euvolemia' ;
+               description :: 'Reviews in Clinical Gerontology 2014 25; 1–22' ;
+          end attributes
+          ;
+          argument :: -((50)),AscEd = "Yes"                                            attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_03' ;
+               caption :: 'Ascitis o edemas graves' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: 1,Ortostatismo="No" and DryMucous="No" and Taquicardia="No" AND AscEd="No"                                            attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_04' ;
+               caption :: 'Ausencia de signos de hipovolemia (ortostatismo, mucosa seca, turgencia escasa, taquicardia) o hipervolemia (ascitis o edemas graves)' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: -((50.0)),Hipotiroidismo="No"                                       attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_06' ;
+               caption :: 'No presenta hipotiroidismo grave' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: 1,((Sexo="Hombre" AND (acidourico_pl < 7.0 AND BUN < 20)) OR (Sexo="Mujer" AND (acidourico_pl < 5.4 AND BUN < 20))) AND (NOT(Ortostatismo="Yes" OR Taquicardia="Yes" OR DryMucous="Yes" OR AscEd="Yes"))                                          attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_07' ;
+               caption :: 'Ácido úrico bajo y BUN bajo/normal y no presenta signos de hipo/hipervolemia' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 5,Hipotiroidismo="Yes"                                       attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_05' ;
+               caption :: 'Presenta hipotiroidismo grave' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: -((5)),TO="Baja"                                        attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_08' ;
+               caption :: 'Tensión ocular baja' ;
+               description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
+          end attributes
+          ;
+          argument :: -((20)),PV  = "Baja"                                        attributes
+               argument_name :: 'euvolemicHypothyroidism_Arg_09' ;
+               caption :: 'Presión venosa baja' ;
+               description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
+          end attributes
+          ;
 end decision.
 
 action  :: 'InfoHyponatremia_copy_3' ;
@@ -1650,7 +1650,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Wed Apr 06 13:51:44 CEST 2016
+     metaprops :: '#Wed Apr 06 14:17:51 CEST 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
