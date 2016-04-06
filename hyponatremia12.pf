@@ -436,6 +436,12 @@ decision  :: 'decision_volemia' ;
                description :: 'Algoritmo Hiponatremia por SIADH HCSC' ;
           end attributes
           ;
+          argument :: -1.0,glucemia < 70 attributes
+               argument_name :: 'euvolemicADHFamily_Arg_18' ;
+               caption :: 'Presenta glucemia < 70' ;
+               description :: 'Criterio de experto para diferenciar este diagnóstico con deficiencia de glucocorticoides' ;
+          end attributes
+          ;
           recommendation ::netsupport(decision_volemia_copy_1, euvolemicADHFamily) >= 1;
      candidate :: 'hipervolemicHF' ;
           caption :: 'Hipervolémico por insuficiencia cardíaca' ;
@@ -1169,6 +1175,12 @@ decision  :: 'decision_volemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
+          argument :: 1.0,glucemia < 70 attributes
+               argument_name :: 'euvolemicGlucodef_Arg_11' ;
+               caption :: 'Glucemia < 70' ;
+               description :: 'Criterio de experto' ;
+          end attributes
+          ;
           recommendation ::netsupport(decision_volemia_copy_1, euvolemicGlucodef) >= 1;
      candidate :: 'hipovolemicHipoaldosteronism' ;
           caption :: 'hipovolémica por hipoaldosteronismo' ;
@@ -1489,7 +1501,7 @@ enquiry  :: 'Exploracion_fisica_copy_1' ;
           default_value ::No;
           mandatory :: no ;
      source :: 'Hipotiroidismo' ;
-          caption :: 'Hipotiroidismo grave' ;
+          caption :: 'Hipotiroidismo severo' ;
           description :: 'Se considera severo cuando niveles de T4 libre inferiores al rango de normalidad, con TSH elevada en caso de hipotiroidismo primario o TSH normal/bajo en caso de hipotiroidismo central' ;
           data_definition :: 'booleanType' ;
           default_value ::No;
@@ -1650,7 +1662,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Wed Apr 06 14:24:51 CEST 2016
+     metaprops :: '#Wed Apr 06 18:00:38 CEST 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
