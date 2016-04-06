@@ -765,6 +765,18 @@ decision  :: 'decision_volemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
           end attributes
           ;
+          argument :: 1.0,hepatopatia="Yes" attributes
+               argument_name :: 'hipervolemiaCirrosis_Arg_13' ;
+               caption :: 'Presenta hepatopatía descompensada' ;
+               description :: 'Criterio de experto' ;
+          end attributes
+          ;
+          argument :: -50,hepatopatia="No" attributes
+               argument_name :: 'hipervolemiaCirrosis_Arg_14' ;
+               caption :: 'No presenta hepatopatía descompensada' ;
+               description :: 'Criterio de experto' ;
+          end attributes
+          ;
           recommendation ::netsupport(decision_volemia_copy_1, hipervolemiaCirrosis) >= 1;
      candidate :: 'hipervolemiaInsuRenal' ;
           caption :: 'Hipervolemia por Insuficiencia Renal' ;
@@ -1580,6 +1592,11 @@ enquiry  :: 'Exploracion_fisica_copy_1' ;
           description :: '' ;
           data_definition :: 'booleanType' ;
           default_value ::No;
+     source :: 'hepatopatia' ;
+          caption :: 'Hepatopatía descompensada' ;
+          description :: '' ;
+          data_definition :: 'booleanType' ;
+          default_value ::No;
      source :: 'FuncionRenal' ;
           caption :: 'Función renal' ;
           description :: '' ;
@@ -1727,7 +1744,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Wed Apr 06 18:26:53 CEST 2016
+     metaprops :: '#Wed Apr 06 18:30:29 CEST 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
