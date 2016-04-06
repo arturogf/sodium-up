@@ -1490,7 +1490,7 @@ enquiry  :: 'Exploracion_fisica_copy_1' ;
           mandatory :: no ;
      source :: 'Hipotiroidismo' ;
           caption :: 'Hipotiroidismo grave' ;
-          description :: '' ;
+          description :: 'Se considera severo cuando niveles de T4 libre inferiores al rango de normalidad, con TSH elevada en caso de hipotiroidismo primario o TSH normal/bajo en caso de hipotiroidismo central' ;
           data_definition :: 'booleanType' ;
           default_value ::No;
      source :: 'InsufCardiaca' ;
@@ -1650,7 +1650,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Wed Apr 06 14:17:51 CEST 2016
+     metaprops :: '#Wed Apr 06 14:24:51 CEST 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
