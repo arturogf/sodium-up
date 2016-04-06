@@ -341,12 +341,6 @@ decision  :: 'decision_volemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
-          argument :: -((50)),FuncionRenal  = "Insuficiencia renal"                                         attributes
-               argument_name :: 'euvolemicADHFamily_Arg_14' ;
-               caption :: 'Presenta insuficiencia renal' ;
-               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
-          end attributes
-          ;
           argument :: -((50.0)),Hipotiroidismo="Yes"                                        attributes
                argument_name :: 'euvolemicADHFamily_Arg_17' ;
                caption :: 'Presenta hipotiroidismo grave' ;
@@ -439,6 +433,12 @@ decision  :: 'decision_volemia' ;
           argument :: -((5)),Taquicardia  = "Yes"                                              attributes
                argument_name :: 'euvolemicADHFamily_Arg_07' ;
                caption :: 'Presencia de taquicardia' ;
+               description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
+          end attributes
+          ;
+          argument :: -((50)),FuncionRenal  = "Insuficiencia renal aguda"                                         attributes
+               argument_name :: 'euvolemicADHFamily_Arg_14' ;
+               caption :: 'Presenta insuficiencia renal aguda' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
@@ -792,11 +792,6 @@ decision  :: 'decision_volemia' ;
                description :: 'Criterio de experto' ;
           end attributes
           ;
-          argument :: 10,FuncionRenal  = "Insuficiencia renal"     attributes
-               argument_name :: 'hipervolemiaInsuRenal_Arg_05' ;
-               caption :: 'Presenta insuficiencia renal' ;
-          end attributes
-          ;
           argument :: -((50)),FuncionRenal  = "Normal"     attributes
                argument_name :: 'hipervolemiaInsuRenal_Arg_06' ;
                caption :: 'No presenta insuficiencia renal' ;
@@ -818,6 +813,11 @@ decision  :: 'decision_volemia' ;
                argument_name :: 'hipervolemiaInsuRenal_Arg_03' ;
                caption :: 'Presenta ascitis o edemas importantes' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013' ;
+          end attributes
+          ;
+          argument :: 10,FuncionRenal  = "Insuficiencia renal crónica avanzada" attributes
+               argument_name :: 'hipervolemiaInsuRenal_Arg_05' ;
+               caption :: 'Presenta insuficiencia renal' ;
           end attributes
           ;
           recommendation ::netsupport(decision_volemia_copy_1, hipervolemiaInsuRenal) >= 1;
@@ -1258,6 +1258,12 @@ decision  :: 'decision_volemia' ;
                description :: 'Source: The American Journal of Medicine, Vol 126, No 10A, October 2013 (TABLE 2)' ;
           end attributes
           ;
+          argument :: -50,FuncionRenal  = "Insuficiencia renal aguda" attributes
+               argument_name :: 'euvolemicGlucodef_Arg_23' ;
+               caption :: 'Presenta insuficiencia renal aguda' ;
+               description :: 'Criterio de experto (en contra de euvolemia)' ;
+          end attributes
+          ;
           recommendation ::netsupport(decision_volemia_copy_1, euvolemicGlucodef) >= 1;
      candidate :: 'hipovolemicHipoaldosteronism' ;
           caption :: 'hipovolémica por hipoaldosteronismo' ;
@@ -1601,6 +1607,7 @@ enquiry  :: 'Exploracion_fisica_copy_1' ;
           caption :: 'Función renal' ;
           description :: '' ;
           data_definition :: 'FuncionRenal' ;
+          default_value ::"Normal";
      source :: 'PV' ;
           caption :: 'Presion Venosa Central' ;
           description :: '' ;
@@ -1744,7 +1751,7 @@ data  :: 'booleanType' ;
      type :: boolean ;
      caption :: 'booleanType' ;
      description :: '' ;
-     metaprops :: '#Wed Apr 06 18:30:29 CEST 2016
+     metaprops :: '#Wed Apr 06 18:51:56 CEST 2016
 datafix156.bradipsiquia.leves=
 datafix156.Vomitos.moderados=
 datafix156.Estupor.graves=
@@ -1767,7 +1774,8 @@ data  :: 'FuncionRenal' ;
      type :: text ;
      caption :: 'FuncionRenal' ;
      description :: '' ;
-     range ::"Insuficiencia renal","Normal";
+     range ::"Insuficiencia renal aguda","Insuficiencia renal crónica avanzada","Normal";
+     default_value ::"Normal";
 end data.
 
 data  :: 'Genero' ;
