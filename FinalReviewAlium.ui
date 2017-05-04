@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+   <guidelineName name="FinalReview">
+      <taskInstances>
+         <taskInstance name="plan_task_03430#patientdata_1" >
+            <nodeCoordinates>
+               <x>280</x>
+               <y>24</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#ComprobarSodio" >
+            <nodeCoordinates>
+               <x>368</x>
+               <y>120</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#Variables" >
+            <nodeCoordinates>
+               <x>48</x>
+               <y>24</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#Terminar" >
+            <nodeCoordinates>
+               <x>432</x>
+               <y>16</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#Protocolo_Hiponatremia" >
+            <nodeCoordinates>
+               <x>1080</x>
+               <y>40</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#Para_calculo_OSM" >
+            <nodeCoordinates>
+               <x>512</x>
+               <y>168</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#Pedir_OSM_directa" >
+            <nodeCoordinates>
+               <x>616</x>
+               <y>48</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#IsoHipertonic" >
+            <nodeCoordinates>
+               <x>840</x>
+               <y>40</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#OSM_directa" >
+            <nodeCoordinates>
+               <x>720</x>
+               <y>8</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#Terminar_por_Hipertonica_o_Isotonica" >
+            <nodeCoordinates>
+               <x>944</x>
+               <y>168</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#Calcular_OSM" >
+            <nodeCoordinates>
+               <x>632</x>
+               <y>168</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03430#InformacionInicial" >
+            <nodeCoordinates>
+               <x>168</x>
+               <y>80</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_03013#Final_del_protocolo" >
+            <nodeCoordinates>
+               <x>328</x>
+               <y>56</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#Exploracion_fisica" >
+            <nodeCoordinates>
+               <x>368</x>
+               <y>112</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#Sintomas_del_paciente_copy_1" >
+            <nodeCoordinates>
+               <x>1024</x>
+               <y>160</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#InfoHyponatremia_copy_3" >
+            <nodeCoordinates>
+               <x>216</x>
+               <y>40</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#decision_volemia_copy_1" >
+            <nodeCoordinates>
+               <x>1152</x>
+               <y>72</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#Check_Colapso" >
+            <nodeCoordinates>
+               <x>712</x>
+               <y>32</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#apoyo_al_diagnostico" >
+            <nodeCoordinates>
+               <x>800</x>
+               <y>112</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#Consumo_de_fármacos" >
+            <nodeCoordinates>
+               <x>912</x>
+               <y>96</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#Introduzca el valor de potasio en orina" >
+            <nodeCoordinates>
+               <x>1280</x>
+               <y>16</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#ExpFis2" >
+            <nodeCoordinates>
+               <x>568</x>
+               <y>80</y>
+            </nodeCoordinates>
+         </taskInstance>
+         <taskInstance name="plan_task_00693#confirma_hipoaldosteronismo" >
+            <nodeCoordinates>
+               <x>1456</x>
+               <y>104</y>
+            </nodeCoordinates>
+         </taskInstance>
+      </taskInstances>
+      <treeViewData>
+         <openPlanPaths>
+            <planInstancePath> plan_task_03430 </planInstancePath> 
+            <planInstancePath> plan_task_03430#Protocolo_Hiponatremia </planInstancePath> 
+         </openPlanPaths>
+      </treeViewData>
+      <plans>
+         <plan name="plan_task_03430" >
+            <windowCoordinates>
+               <left>0</left>
+               <top>0</top>
+               <width>1436</width>
+               <height>394</height>
+            </windowCoordinates>
+         </plan>
+         <plan name="plan_task_03013" >
+            <windowCoordinates>
+               <left>0</left>
+               <top>0</top>
+               <width>1436</width>
+               <height>394</height>
+            </windowCoordinates>
+         </plan>
+         <plan name="plan_task_00693" >
+            <windowCoordinates>
+               <left>0</left>
+               <top>0</top>
+               <width>1436</width>
+               <height>394</height>
+            </windowCoordinates>
+         </plan>
+         <plan name="plan_task_04542" >
+            <windowCoordinates>
+               <left>0</left>
+               <top>0</top>
+               <width>1436</width>
+               <height>394</height>
+            </windowCoordinates>
+         </plan>
+      </plans>
+   </guidelineName>
